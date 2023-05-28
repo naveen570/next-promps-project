@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
 const Nav = () => {
-  const isUserLoggedIn = true;
+  const isUserLoggedIn = false;
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
@@ -20,7 +20,7 @@ const Nav = () => {
     setProvider();
   }, []);
   return (
-    <nav className='flex-between w-full mb-16 pt-3'>
+    <nav className='w-full pt-3 mb-16 flex-between'>
       <Link href={"/"} className='flex gap-2 flex-center'>
         <Image
           src={"/assets/images/logo.svg"}
@@ -32,7 +32,7 @@ const Nav = () => {
         <p className='logo_text'>Prompts</p>
       </Link>
       {/* Desktop nav */}
-      <div className='sm:flex hidden'>
+      <div className='hidden sm:flex'>
         {isUserLoggedIn ? (
           <div className='flex gap-3 md:gap-5'>
             <Link href={"/create-post"} className='black_btn'>
@@ -47,7 +47,7 @@ const Nav = () => {
                 alt='profile'
                 width={37}
                 height={37}
-                className='rounded-full object-contain'
+                className='object-contain rounded-full'
               />
             </Link>
           </div>
@@ -70,7 +70,7 @@ const Nav = () => {
         )}
       </div>
       {/* Mobile nav */}
-      <div className='sm:hidden flex relative'>
+      <div className='relative flex sm:hidden'>
         {isUserLoggedIn ? (
           <div className='flex'>
             <Image
@@ -98,7 +98,7 @@ const Nav = () => {
                   Create Prompt
                 </Link>
                 <button
-                  className='black_btn mt-5 w-full'
+                  className='w-full mt-5 black_btn'
                   type='button'
                   onClick={() => {
                     setToggleDropDown(false);
