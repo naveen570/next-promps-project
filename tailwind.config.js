@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        inter: "var(--font-inter)",
       },
       colors: {
         "primary-orange": "#FF5722",
