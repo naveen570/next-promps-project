@@ -7,7 +7,7 @@ export const connectDB = async () => {
   }
   mongoose.set("strictQuery", true);
   try {
-    await mongoose.connect(process.env.MONGO_URI as string, {
+    await mongoose.connect(process.env.MONGODB_URI as string, {
       dbName: "share_prompt",
     });
     console.log("MongoDB connected");

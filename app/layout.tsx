@@ -9,19 +9,19 @@ const inter = Inter({
   variable: "--font-inter",
 });
 const RootLayout = async ({ children }: { children: ReactNode }) => {
-  const session = await getSession();
+  // const session = await getSession();
   return (
     <html lang='en'>
       <body className={`${inter.variable}`}>
-        {/* <Provider session={session}> */}
-        <div className='main'>
-          <div className='gradient'></div>
-        </div>
-        <main className='app'>
-          <Nav />
-          {children}
-        </main>
-        {/* </Provider> */}
+        <Provider>
+          <div className='main'>
+            <div className='gradient'></div>
+          </div>
+          <main className='app'>
+            <Nav />
+            {children}
+          </main>
+        </Provider>
       </body>
     </html>
   );

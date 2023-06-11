@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
 const Nav = () => {
-  const isUserLoggedIn = false;
+  const { data: session } = useSession();
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
@@ -19,6 +19,7 @@ const Nav = () => {
     };
     setProvider();
   }, []);
+  const userImage = session?.user?.image;
   return (
     <nav className='w-full pt-3 mb-16 flex-between'>
       <Link href={"/"} className='flex gap-2 flex-center'>
@@ -33,7 +34,7 @@ const Nav = () => {
       </Link>
       {/* Desktop nav */}
       <div className='hidden sm:flex'>
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className='flex gap-3 md:gap-5'>
             <Link href={"/create-post"} className='black_btn'>
               Create Post
@@ -43,7 +44,7 @@ const Nav = () => {
             </button>
             <Link href={"/profile"}>
               <Image
-                src={"/assets/images/logo.svg"}
+                src={userImage ?? "/assets/images/logo.svg"}
                 alt='profile'
                 width={37}
                 height={37}
@@ -71,14 +72,14 @@ const Nav = () => {
       </div>
       {/* Mobile nav */}
       <div className='relative flex sm:hidden'>
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className='flex'>
             <Image
-              src={"/assets/images/logo.svg"}
+              src={userImage ?? "/assets/images/logo.svg"}
               alt='logo'
               width={30}
               height={30}
-              className='object-contain'
+              className='object-contain rounded-full'
               onClick={() => setToggleDropDown((x) => !x)}
             />
             {toggleDropDown && (
