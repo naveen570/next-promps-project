@@ -5,8 +5,8 @@ import GoogleProvider from "next-auth/providers/google";
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET_KEY,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET_KEY as string,
     }),
   ],
   callbacks: {
@@ -32,7 +32,6 @@ const handler = NextAuth({
       const sessionUser = await User.findOne({
         email: session?.user?.email,
       });
-      console.log(sessionUser);
       session.user.id = sessionUser._id.toString();
       return session;
     },
