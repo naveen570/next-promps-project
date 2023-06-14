@@ -10,7 +10,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ profile }) {
+    async signIn({ profile, user }) {
       try {
         await connectDB();
         const userExists = await User.findOne({ email: profile?.email });
@@ -18,8 +18,9 @@ const handler = NextAuth({
           const createRequest = {
             email: profile?.email,
             userName: profile?.name?.replace(/ /g, "").toLowerCase(),
-            image: profile?.image,
+            image: user?.image,
           };
+          console.log(createRequest);
           User.create(createRequest);
         }
         return true;
