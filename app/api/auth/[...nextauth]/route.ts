@@ -1,6 +1,6 @@
 import User from "@models/user.model";
 import { connectDB } from "@utils/database";
-import NextAuth, { SessionOptions } from "next-auth";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 const handler = NextAuth({
   providers: [
@@ -33,7 +33,9 @@ const handler = NextAuth({
       const sessionUser = await User.findOne({
         email: session?.user?.email,
       });
-      session.user.id = sessionUser._id.toString();
+      if (sessionUser) {
+        session.user.id = sessionUser._id.toString();
+      }
       return session;
     },
   },

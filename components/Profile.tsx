@@ -5,8 +5,8 @@ import { IPrompt } from "@customTypes/prompt";
 interface IProfileProps {
   name: string;
   desc: string;
-  handleEdit: (post: IPrompt) => void;
-  handleDelete: (promptId: string) => void;
+  handleEdit?: (post: IPrompt) => void;
+  handleDelete?: (promptId: string) => void;
   posts: IPrompt[];
 }
 const Profile = ({

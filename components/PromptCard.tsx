@@ -2,7 +2,7 @@ import { IPost } from "@app/create-prompt/page";
 import { IPrompt } from "@customTypes/prompt";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const PromptCard = ({
@@ -19,6 +19,7 @@ const PromptCard = ({
   const [copied, setCopied] = useState("");
   const pathName = usePathname();
   const { data: session } = useSession();
+  const router = useRouter();
   function handleCopy() {
     setCopied(item.prompt);
     navigator.clipboard.writeText(item.prompt);
@@ -29,7 +30,18 @@ const PromptCard = ({
   return (
     <div className='prompt_card'>
       <div className='flex items-start justify-between gap-5'>
-        <div className='flex items-center justify-start flex-1 gap-3 cursor-pointer'>
+        <div
+          className='flex items-center justify-start flex-1 gap-3 cursor-pointer'
+          onClick={() => {
+            if (session?.user.id === item.creator._id) {
+              router.push("/profile");
+            } else {
+              router.push(
+                `/profile/${item.creator._id}?name=${item.creator.userName}`
+              );
+            }
+          }}
+        >
           <Image
             src={item.creator.image as string}
             alt='user_image'

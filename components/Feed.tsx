@@ -6,11 +6,8 @@ import { IPrompt } from "@customTypes/prompt";
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [postList, setPostList] = useState<IPrompt[]>([]);
-  async function handleSearchChange(
-    element: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setSearchText(element.target.value);
-  }
+  const [searchedPosts, setSearchedPosts] = useState<IPrompt[]>([]);
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout>();
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch("/api/prompt");
@@ -19,6 +16,28 @@ const Feed = () => {
     };
     fetchPosts();
   }, []);
+  function handleSearchChange(text: string) {
+    clearTimeout(searchTimeout);
+    setSearchText(text);
+    setSearchTimeout(
+      setTimeout(() => {
+        const result = filterPosts(text);
+        setSearchedPosts(result);
+      }, 500)
+    );
+  }
+  function filterPosts(target: string): IPrompt[] {
+    const regex = new RegExp(target, "i");
+    return postList.filter(
+      (item) =>
+        regex.test(item.creator.userName) ||
+        regex.test(item.tag) ||
+        regex.test(item.prompt)
+    );
+  }
+  function handleTagClick(tag: string) {
+    handleSearchChange(tag);
+  }
   return (
     <section className='feed'>
       <form className='relative w-full flex-center'>
@@ -26,12 +45,18 @@ const Feed = () => {
           type='text'
           placeholder='Search for a tag or a username'
           value={searchText}
-          onChange={handleSearchChange}
+          onChange={(e) => {
+            handleSearchChange(e.target.value);
+          }}
           required
           className='search_input peer'
         />
       </form>
-      <PromptCardList data={postList} handleTagClick={() => {}} />
+      {searchText ? (
+        <PromptCardList data={searchedPosts} handleTagClick={() => {}} />
+      ) : (
+        <PromptCardList data={postList} handleTagClick={handleTagClick} />
+      )}
     </section>
   );
 };
