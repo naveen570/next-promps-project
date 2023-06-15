@@ -13,7 +13,7 @@ const PromptCard = ({
 }: {
   item: IPrompt;
   handleTagClick?: (tag: string) => void;
-  handleEdit?: () => void;
+  handleEdit?: (post: IPrompt) => void;
   handleDelete?: (promptId: string) => void;
 }) => {
   const [copied, setCopied] = useState("");
@@ -72,7 +72,7 @@ const PromptCard = ({
         <div className='w-full gap-3 pt-3 mt-5 border-t border-gray-100 flex-center'>
           <p
             className='text-sm font-semibold cursor-pointer font-inter green_gradient'
-            onClick={handleEdit}
+            onClick={() => handleEdit && handleEdit(item)}
           >
             Edit
           </p>
